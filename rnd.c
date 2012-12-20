@@ -1,9 +1,10 @@
+#include "rnd.h"
 /*----------------------------------------------------------------------------*/
 /* random.c - contains random number generator and related utilities,         */
 /* including advance_random, warmup_random, random, randomize, flip, and rnd  */
 /*----------------------------------------------------------------------------*/
 
-#include <math.h>
+
 
 /* variables are declared static so that they cannot conflict with names of   */
 /* other global variables in other files.  See K&R, p 80, for scope of static */

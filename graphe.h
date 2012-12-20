@@ -8,7 +8,15 @@
 #include <set>
 
 #include "arete.h"
-#include "rnd.c"
+//#include "rnd.c"
+void advance_random();
+void warmup_random(float random_seed);
+void randomize();
+void randomizeFixed(float randomseed);
+float randomperc();
+int rnd(int low,int high);
+float rndreal(float lo , float hi);
+
 class Arete;
 
 class Graphe
@@ -22,6 +30,7 @@ class Graphe
 
 	public :
 		Graphe(int, double);
+		Graphe();
 		void retire_sommet(int);
 		std::set<int> get_sommets();
 		std::set<Arete> get_aretes();
@@ -30,6 +39,8 @@ class Graphe
 		int				   get_mindegre();
 		double			   get_moydegre();
 		int                get_degre(int);
+		int                get_sommet_max();
+		std::set<int>      get_voisins(int);
 		std::set<Arete> get_arcs(int);
 		void 			   copy_graphe(Graphe* );
 };

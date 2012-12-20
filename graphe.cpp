@@ -1,5 +1,5 @@
 #include "graphe.h"
-
+#include "rnd.c"
 Graphe::Graphe(int n, double proba)
 {
     int i, j;
@@ -33,7 +33,10 @@ Graphe::Graphe(int n, double proba)
     }
     _moydegre = _moydegre/n;
 }
+Graphe::Graphe()
+{
 
+}
 void Graphe::retire_sommet(int a)
 {
     _sommets.erase(a);
@@ -125,6 +128,43 @@ void Graphe::copy_graphe(Graphe* gacopier)
 	_moydegre = gacopier->get_moydegre();
 }
 
+int Graphe::get_sommet_max()
+{
+    int sol;
+    int dmax = -1;
+    int t;
+    std::set<int>::iterator it;
+    for(it = _sommets.begin(); it != _sommets.end(); it++)
+    {
+        t = get_degre((*it));
+        if(t > dmax){
+            dmax = t;
+            sol = (*it);
+        }
+    }
+    return sol;
+}
+
+std::set<int> Graphe::get_voisins(int i)
+{
+    std::set<int> sol;
+    std::set<Arete>::iterator it;
+    for(it = _aretes.begin(); it != _aretes.end(); it++)
+    {
+        if((*it).contient(i))
+        {
+            if((*it).get_sommet1() == i)
+            {
+                sol.insert((*it).get_sommet2());
+            }else
+            {
+                sol.insert((*it).get_sommet1());
+            }
+        }
+    }
+    return sol;
+}
+/*
 int main()
 {
     randomizeFixed(0.35698f);
@@ -147,3 +187,4 @@ int main()
     std::cout << gr2->get_nbarete()<< "\n";
     return 1;
 }
+*/
