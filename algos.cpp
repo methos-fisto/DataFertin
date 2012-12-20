@@ -33,10 +33,17 @@ bool arb_vc(Graphe* graphe, int param)
     return br1 || br2;
 }
 
-int test_arb(Graphe* graphe, int param)
+int test_arb(Graphe* graphe, int param1, int param2)
 {
-    int kmax = param;
-    int kmin = param/2;
+    int kmax;
+    if(param1> param2)
+    {
+        kmax = param2;
+    }else
+    {
+        kmax = param1;
+    }
+    int kmin = param1/2;
 
     int k;
     while((kmin != kmax) && (kmax >= kmin))
@@ -52,4 +59,129 @@ int test_arb(Graphe* graphe, int param)
     }
 
     return kmax;
+}
+
+int deuxapprox(Graphe* mongraphe)
+{   std::set<Arete> mesaretes;
+    int k;
+    int i;
+    int a, b;
+    int sol = 0;
+    std::set<Arete>::iterator it;
+    Graphe* graphe = new Graphe();
+    graphe->copy_graphe(mongraphe);
+
+    while(graphe->get_nbarete() > 0)
+    {
+        k = rnd(1,graphe->get_nbarete());
+        mesaretes= graphe->get_aretes();
+        it = mesaretes.begin();
+        i=1;
+        while(i < k)
+        {
+            i++;
+            it++;
+        }
+        a = (*it).get_sommet1();
+        b = (*it).get_sommet2();
+        graphe->retire_sommet(a);
+        graphe->retire_sommet(b);
+        sol = sol+2;
+        mesaretes.clear();
+    }
+    delete graphe;
+    return sol;
+}
+
+bool kernel_vc(Graphe* mongraphe, int param)
+{
+    Graphe* graphe = new Graphe();
+    int k = param;
+    graphe->copy_graphe(mongraphe);
+    std::set<int> messommets;
+    std::set<int>::iterator it;
+    int d;
+
+    messommets = graphe->get_sommets();
+    it = messommets.begin();
+
+    while((k>0) && (it != messommets.end())){
+    d = graphe->get_degre((*it));
+    if(d== 1)
+    {
+        messommets = graphe->get_voisins((*it));
+        it = messommets.begin();
+        graphe->retire_sommet((*it));
+        messommets = graphe->get_sommets();
+        it = messommets.begin();
+        k--;
+
+    }else
+    {
+        if(d>k)
+        {
+            graphe->retire_sommet((*it));
+            messommets = graphe->get_sommets();
+            it = messommets.begin();
+            k--;
+        }else
+        {
+            it++;
+        }
+    }
+    }
+    if(graphe->get_nbarete()>0)
+    {
+        if(k==0){
+            return false;
+        }else
+        {
+            return arb_vc(graphe,k);
+        }
+    }else
+    {
+        return true;
+    }
+}
+
+int test_kernel(Graphe* graphe, int param1, int param2)
+{
+    int kmax;
+    if(param1> param2)
+    {
+        kmax = param2;
+    }else
+    {
+        kmax = param1;
+    }
+    int kmin = param1/2;
+
+    int k;
+    while((kmin != kmax) && (kmax >= kmin))
+    {
+        k = kmin+(kmax-kmin)/2;
+        if(kernel_vc(graphe, k))
+        {
+            kmax = k;
+        }else
+        {
+            kmin = k+1;
+        }
+    }
+
+    return kmax;
+}
+
+int monheur(Graphe* mongraphe)
+{
+    Graphe* graphe = new Graphe();
+    graphe->copy_graphe(mongraphe);
+    int smax;
+    int k = 0;
+    while(graphe->get_nbarete() > 0){
+        smax = graphe->get_sommet_max();
+        graphe->retire_sommet(smax);
+        k++;
+    }
+    return k;
 }

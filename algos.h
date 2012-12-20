@@ -13,7 +13,9 @@
 
 
 bool arb_vc(Graphe*, int);
-int test_arb(Graphe*, int);
+int test_arb(Graphe*, int, int);
 bool kernel_vc(Graphe*, int);
+int test_kernel(Graphe*, int, int);
 int deuxapprox(Graphe*);
+int monheur(Graphe*);
 #endif

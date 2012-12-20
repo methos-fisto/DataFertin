@@ -1,4 +1,4 @@
-#include "rnd.h"
+
 /*----------------------------------------------------------------------------*/
 /* random.c - contains random number generator and related utilities,         */
 /* including advance_random, warmup_random, random, randomize, flip, and rnd  */
